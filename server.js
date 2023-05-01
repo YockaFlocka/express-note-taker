@@ -1,7 +1,7 @@
 const express = require('express');
 const path = require('path');
 const fs = require('fs');
-const db = require('./db/db.json');
+const dbData = require('./db/db.json');
 
 const PORT = process.env.PORT || 3001;
 
@@ -21,9 +21,46 @@ app.get('/notes', (req, res) =>
 );
 
 app.get('/api/notes', (req, res) => 
-    res.json(db)
+    res.json(dbData)
 );
 
+app.post('/api/notes', (req, res) => {
+    // Log that a POST request was received
+    console.info(`${req.method} request received to add a note`);
+  
+    // Destructuring
+    const { title, text } = req.body;
+  
+    // If all the required properties are present
+    if (title && text) {
+      const newNote = {
+        title,
+        text,
+      };
+
+    // Convert the data to a string so we can save it
+    const noteString = JSON.stringify(newNote);
+
+    // Write the string to db.json file
+    fs.writeFile(`./db/${newNote}.json`, noteString, (err) =>
+      err
+        ? console.error(err)
+        : console.log(
+            `POST for ${newNote} has been written to JSON file`
+          )
+    );
+  
+      const response = {
+        status: 'success',
+        body: newNote,
+      };
+  
+      console.log(response);
+      res.status(201).json(response);
+    } else {
+      res.status(500).json('Error in posting note');
+    }
+  });
 
 
 app.listen(PORT, () =>
