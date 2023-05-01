@@ -12,15 +12,17 @@ app.use(express.static('public'));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
-
+// brings you to the index.html page
 app.get('/', (req, res) => 
     res.sendFile(path.join(__dirname, '/public/index.html'))
 );
 
+// brings you to the notes.html page
 app.get('/notes', (req, res) => 
     res.sendFile(path.join(__dirname, '/public/notes.html'))
 );
 
+// GET route to get all of the notes
 app.get('/api/notes', (req, res) => 
     res.json(dbData)
 );
@@ -37,7 +39,7 @@ app.post('/api/notes', (req, res) => {
       const newNote = {
         title,
         text,
-        note_id: uuid(),
+        id: uuid(),
       };
       
     // Convert the data to a string so we can save it
@@ -71,6 +73,7 @@ app.post('/api/notes', (req, res) => {
         body: newNote,
       };
 
+      // log the new body data to see if correct data is coming through
       console.log(response);
       res.status(201).json(response);
     } else {
