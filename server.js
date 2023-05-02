@@ -13,7 +13,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
 
-// brings you to the notes.html page
+// GET for notes.html
 app.get('/notes', (req, res) => 
     res.sendFile(path.join(__dirname, '/public/notes.html'))
 );
@@ -78,8 +78,8 @@ app.post('/api/notes', (req, res) => {
         body: newNote,
       };
 
-      // log the new body data to see if correct data is coming through
-    //   console.log(response);
+    // log the new body data to see if correct data is coming through
+    // console.log(response);
       res.status(201).json(response);
     } else {
       res.status(500).json('Error in posting note');
