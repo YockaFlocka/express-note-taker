@@ -43,10 +43,9 @@ app.post('/api/notes', (req, res) => {
         id: uuid(),
       };
       
+    // reads the db file and appends the new data
     readAndAppend(newNote, './db/db.json');
-    res.json('Posted note to list');
-    
-    
+        
     // Convert the data to a string so we can save it
     // const noteString = JSON.stringify(newNote);
 
@@ -72,14 +71,14 @@ app.post('/api/notes', (req, res) => {
     //       );
     //     }
     //   });
-  
+      
+    // 
       const response = {
         status: 'success',
         body: newNote,
       };
 
     // log the new body data to see if correct data is coming through
-    // console.log(response);
       res.status(201).json(response);
     } else {
       res.status(500).json('Error in posting note');
