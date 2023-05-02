@@ -2,7 +2,7 @@ const express = require('express');
 const fs = require('fs');
 const path = require('path');
 const uuid = require('./helpers/uuid');
-const { readAndAppend } = require('./public/assets/js/utils');
+const { readAndAppend, writeToFile } = require('./public/assets/js/utils');
 
 const PORT = process.env.PORT || 3001;
 
@@ -22,10 +22,35 @@ app.get('/notes', (req, res) =>
 app.get('/api/notes', (req, res) => 
     fs.readFile('./db/db.json', 'utf8', (err, data) => {
         if(err) return console.log(err);
-        console.log(data)
+        // console.log(data)
         res.json(JSON.parse(data))
     })    
 );
+
+app.delete('/api/notes/:id', (req, res) => {
+  console.log(req.params.id);
+  fs.readFile('./db/db.json', 'utf8', (err, data) => {
+    if(err) return console.log(err);
+    // console.log(data);
+    var dataParse = JSON.parse(data);
+
+    var array = [];
+
+    for(var i = 0; i < dataParse.length; i++) {
+      // console.log(dataParse[i]);
+      if(req.params.id != dataParse[i].id) {
+        array.push(dataParse[i]);
+
+      }
+    }
+    console.log('Old List', dataParse)
+    console.log('New List', array)
+
+    writeToFile('./db/db.json', array);
+    res.json('deleted');
+
+  });
+});
 
 // post for /api/notes
 app.post('/api/notes', (req, res) => {
