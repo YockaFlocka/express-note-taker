@@ -27,6 +27,7 @@ app.get('/api/notes', (req, res) =>
     })    
 );
 
+// post for /api/notes
 app.post('/api/notes', (req, res) => {
     // Log that a POST request was received
     console.info(`${req.method} request received to add a note`);
