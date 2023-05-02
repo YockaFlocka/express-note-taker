@@ -31,7 +31,7 @@ app.delete('/api/notes/:id', (req, res) => {
   console.log(req.params.id);
   fs.readFile('./db/db.json', 'utf8', (err, data) => {
     if(err) return console.log(err);
-    // console.log(data);
+    // console.log(data)
     var dataParse = JSON.parse(data);
 
     var array = [];
@@ -40,11 +40,10 @@ app.delete('/api/notes/:id', (req, res) => {
       // console.log(dataParse[i]);
       if(req.params.id != dataParse[i].id) {
         array.push(dataParse[i]);
-
       }
     }
-    console.log('Old List', dataParse)
-    console.log('New List', array)
+    // console.log('Old List', dataParse)
+    // console.log('New List', array)
 
     writeToFile('./db/db.json', array);
     res.json('deleted');
@@ -70,45 +69,18 @@ app.post('/api/notes', (req, res) => {
       
     // reads the db file and appends the new data
     readAndAppend(newNote, './db/db.json');
-        
-    // Convert the data to a string so we can save it
-    // const noteString = JSON.stringify(newNote);
-
-    // Write the string to db.json file
-    // fs.readFile('./db/db.json', 'utf8', (err, data) => {
-    //     if (err) {
-    //       console.error(err);
-    //     } else {
-    //       // Convert string into JSON object
-    //       const parsedNotes = JSON.parse(data);
-  
-    //       // Add a new note
-    //       parsedNotes.push(newNote);
-  
-    //       // Write updated reviews back to the file
-    //       fs.writeFile(
-    //         './db/db.json',
-    //         JSON.stringify(parsedNotes, null, 4),
-    //         (writeErr) =>
-    //           writeErr
-    //             ? console.error(writeErr)
-    //             : console.info('Successfully updated notes!')
-    //       );
-    //     }
-    //   });
       
-    // 
-      const response = {
-        status: 'success',
-        body: newNote,
-      };
+    const response = {
+      status: 'success',
+      body: newNote,
+    };
 
-    // log the new body data to see if correct data is coming through
+      // log the new body data to see if correct data is coming through
       res.status(201).json(response);
-    } else {
+      } else {
       res.status(500).json('Error in posting note');
-    }
-  });
+      }
+});
 
 // wildcard GET
 app.get('*', (req, res) => 
